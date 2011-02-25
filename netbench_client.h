@@ -1,6 +1,8 @@
 #ifndef _NETBENCH_CLIENT_H
 #define _NETBENCH_CLIENT_H
 
-int netbench_client_run(int rank, int clientsnb);
+#include "options.h"
+
+int netbench_client_run(int rank, int clientsnb, options_t opts);
 
 #endif

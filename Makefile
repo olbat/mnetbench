@@ -1,9 +1,9 @@
 BINDIR= $(DESTDIR)/usr/bin
 MANDIR= $(DESTDIR)/usr/share/man/man1
-CFLAGS= -Wall -ansi -pedantic -O3 -fomit-frame-pointer -g
+CFLAGS= -Wall -std=c99 -pedantic -O3 -fomit-frame-pointer -g
 CC= mpicc ${CFLAGS} 
-SNAME= gridnetbench
-SRC= gridnetbench.c netbench_master.c netbench_client.c
+SNAME= mnetbench
+SRC= mnetbench.c netbench_master.c netbench_client.c
 OBJ= $(SRC:.c=.o)
 
 all : ${SNAME} clean

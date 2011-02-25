@@ -2,13 +2,18 @@
 #include <stdio.h>
 
 #include "netbench_client.h"
-#include "gridnetbench.h"
+#include "options.h"
+#include "debug.h"
+#include "mnetbench.h"
 
-int netbench_client_run(int rank, int clientsnb)
+int netbench_client_run(int rank, int clientsnb, options_t opts)
 {
 	int test;
 	MPI_Status stat;
-	MPI_Recv(&test, 1, MPI_INT, GRID_MASTER_RANK, 1, MPI_COMM_WORLD,&stat);
-	printf("Received %d from master\n",test);
+	DEBUG(opts,"(%d) Waiting for master's message\n",rank);
+
+	MPI_Recv(&test, 1, MPI_INT, NETBENCH_MASTER_RANK, 1, MPI_COMM_WORLD,&stat);
+
+	DEBUG(opts,"(%d) Got %d from master\n",rank,test);
 	return 0;
 }
