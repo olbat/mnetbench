@@ -1,6 +1,5 @@
 #include <mpi.h>
 #include <stdio.h>
-#include <argp.h>
 
 #include "mnetbench.h"
 #include "errors.h"
