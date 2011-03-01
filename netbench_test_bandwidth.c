@@ -5,6 +5,7 @@
 #include "netbench_test.h"
 #include "netbench_test_type.h"
 #include "netbench_result.h"
+#include "netbench_result_bandwidth.h"
 
 
 struct netbench_test_data *
@@ -33,7 +34,7 @@ int netbench_test_bandwidth_reset(struct netbench_test_data *data)
 	return 0;
 }
 
-int netbench_test_bandwidth_run(
+int netbench_test_bandwidth_tester_run(
 	int mrank,
 	int trank,
 	struct netbench_result *res,
@@ -44,6 +45,23 @@ int netbench_test_bandwidth_run(
 {
 	struct netbench_result_bandwidth *resptr;
 	resptr = res->u.bandwidth;
+	struct netbench_test_bandwidth *datptr;
+	datptr = dat->u.bandwidth;
+
+	datptr->average = 1;
+	resptr->bw = 1;
+	
+	return 0;
+}
+
+int netbench_test_bandwidth_tested_run(
+	int mrank,
+	int trank,
+	struct netbench_test_data *dat,
+	unsigned int repeat,
+	int opts
+)
+{
 	struct netbench_test_bandwidth *datptr;
 	datptr = dat->u.bandwidth;
 

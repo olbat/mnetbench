@@ -10,14 +10,7 @@ __inline__ struct netbench_result_info *
 netbench_result_info_fetch(enum netbench_test_type type)
 {
 	struct netbench_result_info *ptr;
-	struct netbench_result_info resultinfolist[] = {
-		{ NETBENCH_TEST_BANDWIDTH,
-			netbench_result_bandwidth_init,
-			netbench_result_bandwidth_free,
-			0,0
-		},
-		{ 0 }
-	};
+	struct netbench_result_info resultinfolist[] = NETBENCH_RESULT_INFO_LIST;
 
 	ptr = resultinfolist;
 
@@ -28,14 +21,19 @@ netbench_result_info_fetch(enum netbench_test_type type)
 }
 
 struct netbench_result *
-netbench_result_init(enum netbench_test_type type)
+netbench_result_init(enum netbench_test_type type, int srank, int drank)
 {
+	struct netbench_result *ret;
 	struct netbench_result_info *info;
 	info = netbench_result_info_fetch(type);
 	if (!info)
 		return 0;
 
-	return info->init_func();
+	ret = info->init_func();
+	ret->srank = srank;
+	ret->drank = drank;
+
+	return ret;
 }
 
 void

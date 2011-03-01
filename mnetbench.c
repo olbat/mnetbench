@@ -34,7 +34,7 @@ int main (int argc, char **argv)
 
 	if (rank == NETBENCH_MASTER_RANK)
 	{
-		ret = netbench_master_run(rank, tasknb,options);
+		ret = netbench_master_run(rank,tasknb,options);
 	}
 	else
 	{
