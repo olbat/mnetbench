@@ -17,14 +17,14 @@ netbench_algo_info_fetch(enum netbench_algo_type type)
 void netbench_algo_run(
 	enum netbench_algo_type algo,
 	enum netbench_role role,
+	struct linked_list *tasks,
 	int mrank,
 	int trank,
-	int tasknb,
-	int opts
+	int tasknb
 )
 {
 	struct netbench_algo_info *info;
 	info = netbench_algo_info_fetch(algo);
 
-	info->func_run(role,mrank,trank,tasknb,opts);
+	info->func_run(role,tasks,mrank,trank,tasknb);
 }

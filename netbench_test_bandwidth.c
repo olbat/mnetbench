@@ -6,6 +6,8 @@
 #include "netbench_test_type.h"
 #include "netbench_result.h"
 #include "netbench_result_bandwidth.h"
+#include "debug.h"
+#include "options.h"
 
 
 struct netbench_test_data *
@@ -18,7 +20,8 @@ netbench_test_bandwidth_init(int opts)
 	ret->u.bandwidth = (struct netbench_test_bandwidth *)
 		malloc(sizeof(struct netbench_test_bandwidth));
 
-	ret->u.bandwidth = 0;
+	ret->u.bandwidth = (struct netbench_test_bandwidth *)
+		malloc(sizeof(struct netbench_test_bandwidth));
 
 	return ret;
 }
@@ -43,6 +46,7 @@ int netbench_test_bandwidth_tester_run(
 	int opts
 )
 {
+	int test;
 	struct netbench_result_bandwidth *resptr;
 	resptr = res->u.bandwidth;
 	struct netbench_test_bandwidth *datptr;
@@ -50,6 +54,10 @@ int netbench_test_bandwidth_tester_run(
 
 	datptr->average = 1;
 	resptr->bw = 1;
+	test = 42;
+
+	DEBUG(opts,"(%d) Send message %d to %d\n",mrank,test,trank);
+	MPI_Send(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
 	
 	return 0;
 }
@@ -62,10 +70,16 @@ int netbench_test_bandwidth_tested_run(
 	int opts
 )
 {
+	int test;
 	struct netbench_test_bandwidth *datptr;
+	MPI_Status stat;
 	datptr = dat->u.bandwidth;
 
 	datptr->average = 1;
+
+	DEBUG(opts,"(%d) Waiting message from %d\n",mrank,trank);
+	MPI_Recv(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
+	DEBUG(opts,"(%d) Got %d from %d\n",mrank,test,trank);
 	
 	return 0;
 }

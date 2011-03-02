@@ -3,6 +3,7 @@
 
 #include "netbench_algorithm_type.h"
 #include "netbench_role.h"
+#include "linked_list.h"
 
 #include "netbench_algorithm_matrix.h"
 
@@ -15,11 +16,11 @@
 struct netbench_algo_info
 {
 	enum netbench_algo_type type;
-	void (*func_run)(enum netbench_role role, int mrank, int trank,
-		int tasknb, int opts);
+	void (*func_run)(enum netbench_role role, struct linked_list *tasks,
+		int mrank, int trank, int tasknb);
 };
 
 void netbench_algo_run(enum netbench_algo_type algo,enum netbench_role role,
-	int mrank,int trank,int tasknb,int opts);
+	struct linked_list *tasks,int mrank,int trank,int tasknb);
 
 #endif

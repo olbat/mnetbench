@@ -8,14 +8,9 @@
 int netbench_master_run(int rank, int clientsnb, options_t opts)
 {
 	int test = 42, i = clientsnb;
-	while (i--)
-	{
-		if (i != rank)
-		{
-			DEBUG(opts,"(m) Send message to %d\n",i);
 
-			MPI_Send(&test, 1, MPI_INT, i, 1, MPI_COMM_WORLD);
-		}
-	}
+	DEBUG(opts,"(m) Doing nothing\n");
+	sleep(8);
+
 	return 0;
 }
