@@ -5,12 +5,19 @@
 #include "netbench_result.h"
 #include "netbench_role.h"
 
+#include "netbench_test_bandwidth.h"
+#include "netbench_test_latency.h"
+
 #define NETBENCH_TEST_INFO_LIST \
 { \
 	{ NETBENCH_TEST_BANDWIDTH, netbench_test_bandwidth_init, \
 		netbench_test_bandwidth_free, netbench_test_bandwidth_reset, \
 		netbench_test_bandwidth_tester_run, \
 		netbench_test_bandwidth_tested_run }, \
+	{ NETBENCH_TEST_LATENCY, netbench_test_latency_init, \
+		netbench_test_latency_free, netbench_test_latency_reset, \
+		netbench_test_latency_tester_run, \
+		netbench_test_latency_tested_run }, \
 	{ 0 } \
 }
 

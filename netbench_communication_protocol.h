@@ -1,0 +1,9 @@
+#ifndef _NETBENCH_COMMUNICATION_PROTOCOL_H
+#define _NETBENCH_COMMUNICATION_PROTOCOL_H
+
+enum netbench_comm_proto
+{
+	NETBENCH_COMM_PROTO_RESULT
+};
+
+#endif

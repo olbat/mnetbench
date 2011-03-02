@@ -6,6 +6,7 @@
 #include "netbench_role.h"
 
 #include "netbench_test_bandwidth.h"
+#include "netbench_test_latency.h"
 
 
 __inline__ struct netbench_test_info *

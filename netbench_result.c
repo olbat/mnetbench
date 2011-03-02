@@ -1,9 +1,13 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <mpi.h>
 
 #include "netbench_result.h"
 #include "netbench_test_type.h"
+#include "netbench_communication.h"
 
 #include "netbench_result_bandwidth.h"
+#include "netbench_result_latency.h"
 
 
 __inline__ struct netbench_result_info *
@@ -49,21 +53,55 @@ netbench_result_free(struct netbench_result *res)
 
 int netbench_result_send(struct netbench_result *res, int rank)
 {
+	int srank,drank;
 	struct netbench_result_info *info;
 	info = netbench_result_info_fetch(res->type);
 	if (!info)
 		return 1;
 
+	netbench_comm_result_send(res->type,rank);
+	
+	srank = res->srank;
+	MPI_Send(&srank, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+	drank = res->drank;
+	MPI_Send(&drank, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+
 	return info->send_func(res,rank);
 }
 
 struct netbench_result *
-netbench_result_recv(struct netbench_result *res, int rank)
+netbench_result_recv(int rank)
+{
+	struct netbench_result *ret;
+	int srank,drank;
+	MPI_Status stat;
+	enum netbench_test_type type;
+	struct netbench_result_info *info;
+
+	type = netbench_comm_result_recv(rank);
+
+	info = netbench_result_info_fetch(type);
+	if (!info)
+		return 0;
+
+	MPI_Recv(&srank, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+	MPI_Recv(&drank, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+
+	ret = info->recv_func(rank);
+	ret->srank = srank;
+	ret->drank = drank;
+
+	return ret;
+}
+
+void netbench_result_print(struct netbench_result *res)
 {
 	struct netbench_result_info *info;
 	info = netbench_result_info_fetch(res->type);
 	if (!info)
-		return 0;
+		return ;
 
-	return info->recv_func(rank);
+	fprintf(stdout,"Result [%d -> %d] ",res->srank,res->drank);
+	info->print_func(res);
+	fprintf(stdout,"\n");
 }

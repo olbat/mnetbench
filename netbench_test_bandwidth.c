@@ -7,7 +7,6 @@
 #include "netbench_result.h"
 #include "netbench_result_bandwidth.h"
 #include "debug.h"
-#include "options.h"
 
 
 struct netbench_test_data *
