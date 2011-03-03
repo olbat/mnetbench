@@ -27,11 +27,11 @@
 
 struct linked_list *linked_list_init()
 {
-	struct linked_list *end;
-	end = (struct linked_list *) malloc(sizeof(struct linked_list));
-	end->next = 0;
-	end->value = 0;
-	return end;
+	struct linked_list *ret;
+	ret = (struct linked_list *) malloc(sizeof(struct linked_list));
+	ret->next = 0;
+	ret->value = 0;
+	return ret;
 }
 
 void linked_list_free(struct linked_list *l)
@@ -64,6 +64,22 @@ linked_list_add(
 	}
 	l->value = val;
 	return val;
+}
+
+__inline__ unsigned int 
+linked_list_size(struct linked_list *list)
+{
+	unsigned int ret;
+	ret = 0;
+
+	while (list)
+	{
+		if (list->value)
+			ret++;
+		list = list->next;
+	}
+
+	return ret;
 }
 
 struct linked_list_value *

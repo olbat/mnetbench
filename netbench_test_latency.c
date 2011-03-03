@@ -54,7 +54,6 @@ int netbench_test_latency_tester_run(
 	datptr->average = 1;
 	test = 42;
 
-	DEBUG(opts,"(%d) Send latency message %d to %d\n",mrank,test,trank);
 	start = MPI_Wtime();
 	MPI_Send(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
 	MPI_Recv(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
@@ -82,10 +81,9 @@ int netbench_test_latency_tested_run(
 
 	datptr->average = 1;
 
-	DEBUG(opts,"(%d) Waiting latency message from %d\n",mrank,trank);
 	MPI_Recv(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
-	DEBUG(opts,"(%d) Answer latency message from %d\n",mrank,trank);
 	MPI_Send(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
+	DEBUG(opts,"(%d) Answer latency message from %d\n",mrank,trank);
 	
 	return 0;
 }

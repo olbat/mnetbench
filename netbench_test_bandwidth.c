@@ -55,7 +55,7 @@ int netbench_test_bandwidth_tester_run(
 	resptr->bw = 1;
 	test = 42;
 
-	DEBUG(opts,"(%d) Send message %d to %d\n",mrank,test,trank);
+	DEBUG(opts,"(%d) Send Bandwidth message to %d\n",mrank,trank);
 	MPI_Send(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
 	
 	return 0;
@@ -76,9 +76,8 @@ int netbench_test_bandwidth_tested_run(
 
 	datptr->average = 1;
 
-	DEBUG(opts,"(%d) Waiting message from %d\n",mrank,trank);
 	MPI_Recv(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
-	DEBUG(opts,"(%d) Got %d from %d\n",mrank,test,trank);
+	DEBUG(opts,"(%d) Got Bandwidth message from %d\n",mrank,trank);
 	
 	return 0;
 }

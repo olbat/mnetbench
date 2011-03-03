@@ -47,6 +47,7 @@ struct linked_list *linked_list_init();
 void linked_list_free(struct linked_list *);
 struct linked_list_value *linked_list_add(struct linked_list *,struct linked_list_value *);
 void linked_list_value_free(struct linked_list_value *);
+unsigned int linked_list_size(struct linked_list *);
 
 
 #include "netbench_result.h"

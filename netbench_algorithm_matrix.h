@@ -4,7 +4,8 @@
 #include "netbench_role.h"
 #include "linked_list.h"
 
-void netbench_algo_matrix_run(enum netbench_role role, 
-	struct linked_list *tasks,int mrank,int trank,int tasknb);
+void netbench_algo_matrix_run_client(struct linked_list *tasks,
+	struct linked_list *results,int mrank,int tasknb);
+void netbench_algo_matrix_run_master(struct linked_list *results, int tasknb);
 
 #endif

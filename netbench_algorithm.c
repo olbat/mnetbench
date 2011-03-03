@@ -14,17 +14,28 @@ netbench_algo_info_fetch(enum netbench_algo_type type)
 	return ptr;
 }
 
-void netbench_algo_run(
+void netbench_algo_run_master(
 	enum netbench_algo_type algo,
-	enum netbench_role role,
-	struct linked_list *tasks,
-	int mrank,
-	int trank,
+	struct linked_list *results,
 	int tasknb
 )
 {
 	struct netbench_algo_info *info;
 	info = netbench_algo_info_fetch(algo);
 
-	info->func_run(role,tasks,mrank,trank,tasknb);
+	info->func_run_master(results,tasknb);
+}
+
+void netbench_algo_run_client(
+	enum netbench_algo_type algo,
+	struct linked_list *tasks,
+	struct linked_list *results,
+	int mrank,
+	int tasknb
+)
+{
+	struct netbench_algo_info *info;
+	info = netbench_algo_info_fetch(algo);
+
+	info->func_run_client(tasks,results,mrank,tasknb);
 }

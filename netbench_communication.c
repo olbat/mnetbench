@@ -4,6 +4,7 @@
 #include "netbench_communication.h"
 #include "netbench_communication_protocol.h"
 #include "netbench_test_type.h"
+#include "netbench_role.h"
 
 void netbench_comm_error(char *msg)
 {
@@ -52,3 +53,68 @@ enum netbench_test_type netbench_comm_result_recv(int rank)
 	return ret;
 }
 
+int netbench_comm_list_send(unsigned int size, int rank)
+{
+	netbench_comm_proto_send(NETBENCH_COMM_PROTO_LIST,rank);
+	MPI_Send(&size, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+
+	return 0;
+}
+
+unsigned int netbench_comm_list_recv(int rank)
+{
+	unsigned int ret;
+	MPI_Status stat;
+
+	netbench_comm_proto_recv(NETBENCH_COMM_PROTO_LIST,rank);
+
+	MPI_Recv(&ret, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+
+	return ret;
+}
+
+int netbench_comm_role_send(enum netbench_role role, int rank)
+{
+	int rol;
+
+	netbench_comm_proto_send(NETBENCH_COMM_PROTO_ROLE,rank);
+	rol = role;
+	MPI_Send(&rol, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+
+	return 0;
+}
+
+enum netbench_role netbench_comm_role_recv(int rank)
+{
+	int ret;
+	MPI_Status stat;
+
+	netbench_comm_proto_recv(NETBENCH_COMM_PROTO_ROLE,rank);
+
+	MPI_Recv(&ret, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+
+	return ret;
+}
+
+int netbench_comm_rank_send(int ranktosend, int rank)
+{
+	int rts;
+
+	netbench_comm_proto_send(NETBENCH_COMM_PROTO_RANK,rank);
+	rts = ranktosend;
+	MPI_Send(&rts, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+
+	return 0;
+}
+
+int netbench_comm_rank_recv(int rank)
+{
+	int ret;
+	MPI_Status stat;
+
+	netbench_comm_proto_recv(NETBENCH_COMM_PROTO_RANK,rank);
+
+	MPI_Recv(&ret, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+
+	return ret;
+}
