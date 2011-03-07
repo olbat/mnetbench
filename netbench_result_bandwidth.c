@@ -5,6 +5,7 @@
 #include "netbench_result_bandwidth.h"
 #include "netbench_test_type.h"
 #include "netbench_result.h"
+#include "netbench_printer_tool.h"
 
 struct netbench_result *
 netbench_result_bandwidth_init()
@@ -30,11 +31,11 @@ void netbench_result_bandwidth_free(struct netbench_result *res)
 
 int netbench_result_bandwidth_send(struct netbench_result *res, int rank)
 {
-	int bw;
+	double bw;
 	
 	bw = res->u.bandwidth->bw;
 
-	MPI_Send(&bw, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+	MPI_Send(&bw, 1, MPI_DOUBLE, rank, 1, MPI_COMM_WORLD);
 
 	return 0;
 }
@@ -47,7 +48,7 @@ netbench_result_bandwidth_recv(int rank)
 
 	ret = netbench_result_bandwidth_init();
 	
-	MPI_Recv(&ret->u.bandwidth->bw, 1, MPI_INT, rank, 1, MPI_COMM_WORLD,
+	MPI_Recv(&ret->u.bandwidth->bw, 1, MPI_DOUBLE, rank, 1, MPI_COMM_WORLD,
 		&stat);
 
 	return ret;
@@ -55,5 +56,11 @@ netbench_result_bandwidth_recv(int rank)
 
 void netbench_result_bandwidth_print(struct netbench_result *res)
 {
-	fprintf(stdout,"(Bandwidth): \n\t bw=%d",res->u.bandwidth->bw);
+	char printbuff[NETBENCH_PRINTER_BUFF_SIZE];
+
+	fprintf(stdout,"(Bandwidth): \n\t bw=%s",
+		netbench_printer_tool_bandwidth(
+			printbuff,sizeof(printbuff),res->u.bandwidth->bw
+		)
+	);
 }

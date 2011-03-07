@@ -63,5 +63,5 @@ void netbench_result_latency_print(struct netbench_result *res)
 {
 	fprintf(stdout,"(Latency):\n");
 	fprintf(stdout,"\tsec=%ds\n",res->u.latency->sec);
-	fprintf(stdout,"\tmsec=%fms",res->u.latency->msec);
+	fprintf(stdout,"\tmsec=%.3fms",res->u.latency->msec);
 }

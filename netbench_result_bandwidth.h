@@ -3,7 +3,7 @@
 
 struct netbench_result_bandwidth
 {
-	int bw;
+	double bw;
 };
 
 struct netbench_result *netbench_result_bandwidth_init();

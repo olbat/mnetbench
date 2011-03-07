@@ -45,7 +45,6 @@ int netbench_test_latency_tester_run(
 )
 {
 	int test;
-	int test1, test2;
 	struct timeval start, stop, diff;
 	MPI_Status stat;
 	struct netbench_result_latency *resptr;
@@ -68,7 +67,7 @@ int netbench_test_latency_tester_run(
 	
 	resptr->sec = diff.tv_sec;
 	resptr->msec = ((float)diff.tv_usec)/1000;
-	DEBUG(opts,"(%d) Latency of %d is %ds %fms\n",mrank,trank,resptr->sec,
+	DEBUG(opts,"(%d) Latency of %d is %ds %.3fms\n",mrank,trank,resptr->sec,
 		resptr->msec);
 
 	return 0;
