@@ -1,11 +1,13 @@
 #include <mpi.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "netbench_test_latency.h"
 #include "netbench_test.h"
 #include "netbench_test_type.h"
 #include "netbench_result.h"
 #include "netbench_result_latency.h"
+#include "netbench_time.h"
 #include "debug.h"
 
 
@@ -43,7 +45,8 @@ int netbench_test_latency_tester_run(
 )
 {
 	int test;
-	double start, stop;
+	int test1, test2;
+	struct timeval start, stop, diff;
 	MPI_Status stat;
 	struct netbench_result_latency *resptr;
 	struct netbench_test_latency *datptr;
@@ -54,13 +57,19 @@ int netbench_test_latency_tester_run(
 	datptr->average = 1;
 	test = 42;
 
-	start = MPI_Wtime();
+	gettimeofday(&start,NULL);
+
 	MPI_Send(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
 	MPI_Recv(&test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
-	stop = MPI_Wtime();
+
+	gettimeofday(&stop,NULL);
+
+	timeval_subtract(&diff, &stop, &start);
 	
-	resptr->latency = (stop - start);
-	DEBUG(opts,"(%d) Latency of %d is %f\n",mrank,trank,resptr->latency);
+	resptr->sec = diff.tv_sec;
+	resptr->msec = ((float)diff.tv_usec)/1000;
+	DEBUG(opts,"(%d) Latency of %d is %ds %fms\n",mrank,trank,resptr->sec,
+		resptr->msec);
 
 	return 0;
 }

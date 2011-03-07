@@ -3,7 +3,8 @@
 
 struct netbench_result_latency
 {
-	float latency;
+	int sec;
+	float msec;
 };
 
 struct netbench_result *netbench_result_latency_init();

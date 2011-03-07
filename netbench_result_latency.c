@@ -16,7 +16,8 @@ netbench_result_latency_init()
 	ret->u.latency = (struct netbench_result_latency *) 
 		malloc(sizeof(struct netbench_result_latency));
 
-	ret->u.latency->latency = 0;
+	ret->u.latency->sec = 0;
+	ret->u.latency->msec = 0.0f;
 
 	return ret;
 }
@@ -30,11 +31,14 @@ void netbench_result_latency_free(struct netbench_result *res)
 
 int netbench_result_latency_send(struct netbench_result *res, int rank)
 {
-	float lat;
+	int lats;
+	float latm;
 	
-	lat = res->u.latency->latency;
+	lats = res->u.latency->sec;
+	latm = res->u.latency->msec;
 
-	MPI_Send(&lat, 1, MPI_FLOAT, rank, 1, MPI_COMM_WORLD);
+	MPI_Send(&lats, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+	MPI_Send(&latm, 1, MPI_FLOAT, rank, 1, MPI_COMM_WORLD);
 
 	return 0;
 }
@@ -47,13 +51,17 @@ netbench_result_latency_recv(int rank)
 
 	ret = netbench_result_latency_init();
 	
-	MPI_Recv(&ret->u.latency->latency, 1, MPI_FLOAT, rank, 1, 
-		MPI_COMM_WORLD, &stat);
+	MPI_Recv(&ret->u.latency->sec, 1, MPI_INT, rank, 1, MPI_COMM_WORLD,
+		&stat);
+	MPI_Recv(&ret->u.latency->msec, 1, MPI_FLOAT, rank, 1, MPI_COMM_WORLD,
+		&stat);
 
 	return ret;
 }
 
 void netbench_result_latency_print(struct netbench_result *res)
 {
-	fprintf(stdout,"(Latency): \n\t lat=%f",res->u.latency->latency);
+	fprintf(stdout,"(Latency):\n");
+	fprintf(stdout,"\tsec=%ds\n",res->u.latency->sec);
+	fprintf(stdout,"\tmsec=%fms",res->u.latency->msec);
 }

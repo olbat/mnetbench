@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <mpi.h>
 
 #include "netbench_test.h"
 #include "netbench_test_type.h"
@@ -63,10 +64,20 @@ netbench_test_run_tester(
 )
 {
 	unsigned int i;
+	int init_test;
+	MPI_Status stat;
 	struct netbench_test_info *info;
 	info = netbench_test_info_fetch(test->type);
 	if (!info)
 		return 1;
+
+	/* For some strange reasons, we need to make a first fake connection
+	 * in order to get good test results (the first time a connection is 
+	 * made between two process, packets are routed weirdly
+	 */
+	init_test = 0;
+	MPI_Send(&init_test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
+	MPI_Recv(&init_test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
 
 	i = repeat;
 	while (i--)
@@ -84,10 +95,19 @@ netbench_test_run_tested(
 )
 {
 	unsigned int i;
+	int init_test;
+	MPI_Status stat;
 	struct netbench_test_info *info;
 	info = netbench_test_info_fetch(test->type);
 	if (!info)
 		return 1;
+
+	/* For some strange reasons, we need to make a first fake connection
+	 * in order to get good test results (the first time a connection is 
+	 * made between two process, packets are routed weirdly
+	 */
+	MPI_Recv(&init_test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD, &stat);
+	MPI_Send(&init_test, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
 
 	i = repeat;
 	while (i--)

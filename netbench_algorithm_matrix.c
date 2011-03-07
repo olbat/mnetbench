@@ -30,7 +30,10 @@ void netbench_algo_matrix_run_client(
 			while (i--)
 			{
 				if ((i != mrank) && (i != NETBENCH_MASTER_RANK))
-					netbench_list_task_run(tasks,role,mrank,i);
+				{
+					netbench_list_task_run(tasks,role,mrank,
+						i);
+				}
 			}
 			netbench_list_result_send(results,NETBENCH_MASTER_RANK);
 		}

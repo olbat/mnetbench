@@ -11,11 +11,12 @@ char errmsg[NETBENCH_ERR_STR_SIZE];
 
 int main (int argc, char **argv)
 {
-	int ret = 0, rank, tasknb, rc;
+	int ret = 0, rank, tasknb, rc, pnamelen;
+	char pname[MPI_MAX_PROCESSOR_NAME];
 	options_t options;
 
 	OPT_INIT(options);	
-	//OPT_SET(options,OPT_FLAG_DEBUG);
+	OPT_SET(options,OPT_FLAG_DEBUG);
 	
 	if (argc < 1)
 	{
@@ -31,6 +32,9 @@ int main (int argc, char **argv)
 
 	MPI_Comm_size(MPI_COMM_WORLD,&tasknb);
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+	MPI_Get_processor_name(pname, &pnamelen);
+
+	fprintf(stdout,"Process %d is %s\n", rank, pname);
 
 	if (rank == NETBENCH_MASTER_RANK)
 	{
