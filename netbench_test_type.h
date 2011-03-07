@@ -7,4 +7,6 @@ enum netbench_test_type
 	NETBENCH_TEST_BANDWIDTH
 };
 
+char *netbench_test_type_name(enum netbench_test_type type);
+
 #endif

@@ -3,7 +3,7 @@ MANDIR= $(DESTDIR)/usr/share/man/man1
 CFLAGS= -Wall -std=c99 -pedantic -O3 -fomit-frame-pointer -g
 CC= mpicc ${CFLAGS} 
 SNAME= mnetbench
-SRC= mnetbench.c linked_list.c netbench_master.c netbench_client.c netbench_algorithm.c netbench_task.c netbench_test.c netbench_test_bandwidth.c netbench_test_latency.c netbench_result.c netbench_result_bandwidth.c netbench_result_latency.c netbench_list_task.c netbench_algorithm_matrix.c netbench_communication.c netbench_list_result.c netbench_time.c netbench_printer_tool.c
+SRC= mnetbench.c linked_list.c netbench_master.c netbench_client.c netbench_algorithm.c netbench_task.c netbench_test.c netbench_test_bandwidth.c netbench_test_latency.c netbench_result.c netbench_result_bandwidth.c netbench_result_latency.c netbench_list_task.c netbench_algorithm_matrix.c netbench_communication.c netbench_list_result.c netbench_time.c netbench_printer_tool.c netbench_test_type.c netbench_printer.c
 OBJ= $(SRC:.c=.o)
 
 all : ${SNAME} clean

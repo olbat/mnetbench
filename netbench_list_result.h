@@ -5,6 +5,5 @@
 
 void netbench_list_result_send(struct linked_list *results,int rank);
 struct linked_list *netbench_list_result_recv(struct linked_list *res,int rank);
-void netbench_list_result_print(struct linked_list *results);
 
 #endif

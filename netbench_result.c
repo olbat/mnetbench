@@ -9,6 +9,8 @@
 #include "netbench_result_bandwidth.h"
 #include "netbench_result_latency.h"
 
+#include "netbench_printer_type.h"
+
 
 __inline__ struct netbench_result_info *
 netbench_result_info_fetch(enum netbench_test_type type)
@@ -94,14 +96,34 @@ netbench_result_recv(int rank)
 	return ret;
 }
 
-void netbench_result_print(struct netbench_result *res)
+void netbench_result_print(
+	enum netbench_printer_type prtype,
+	struct netbench_result *res
+)
 {
 	struct netbench_result_info *info;
 	info = netbench_result_info_fetch(res->type);
 	if (!info)
 		return ;
 
-	fprintf(stdout,"Result [%d -> %d] ",res->srank,res->drank);
-	info->print_func(res);
-	fprintf(stdout,"\n");
+	switch (prtype)
+	{
+	case NETBENCH_PRINTER_CLASSIC:
+		fprintf(stdout,"[%d -> %d] %s test results:\n",
+			res->srank,res->drank,netbench_test_type_name(res->type));
+		break;
+	default:
+		break;
+	}
+
+	info->print_func(prtype,res);
+
+	switch (prtype)
+	{
+	case NETBENCH_PRINTER_CLASSIC:
+		fprintf(stdout,"\n");
+		break;
+	default:
+		break;
+	}
 }

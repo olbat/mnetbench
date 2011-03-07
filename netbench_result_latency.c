@@ -5,6 +5,7 @@
 #include "netbench_result_latency.h"
 #include "netbench_test_type.h"
 #include "netbench_result.h"
+#include "netbench_printer_type.h"
 
 struct netbench_result *
 netbench_result_latency_init()
@@ -59,9 +60,21 @@ netbench_result_latency_recv(int rank)
 	return ret;
 }
 
-void netbench_result_latency_print(struct netbench_result *res)
+void netbench_result_latency_print(
+	enum netbench_printer_type prtype,
+	struct netbench_result *res
+)
 {
-	fprintf(stdout,"(Latency):\n");
-	fprintf(stdout,"\tsec=%ds\n",res->u.latency->sec);
-	fprintf(stdout,"\tmsec=%.3fms",res->u.latency->msec);
+	switch (prtype)
+	{
+	case NETBENCH_PRINTER_CLASSIC:
+		fprintf(stdout,"\tsec=%ds\n",res->u.latency->sec);
+		fprintf(stdout,"\tmsec=%.3fms",res->u.latency->msec);
+		break;
+	case NETBENCH_PRINTER_HTML:
+	default:
+		fprintf(stdout,"%ds %.3fms",res->u.latency->sec,
+			res->u.latency->msec);
+		break;
+	}
 }

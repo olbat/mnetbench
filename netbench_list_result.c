@@ -44,13 +44,3 @@ netbench_list_result_recv(struct linked_list *results, int rank)
 
 	return ret;
 }
-
-void netbench_list_result_print(struct linked_list *results)
-{
-	while (results)
-	{
-		if (results->value)
-			netbench_result_print(results->value->u.res);
-		results = results->next;
-	}
-}

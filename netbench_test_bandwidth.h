@@ -4,7 +4,7 @@
 #include "netbench_test.h"
 #include "netbench_result.h"
 
-#define NETBENCH_TEST_BANDWIDTH_DEFAULT_TIME 20 /* seconds */
+#define NETBENCH_TEST_BANDWIDTH_DEFAULT_TIME 2 /* seconds */
 #define NETBENCH_TEST_BANDWIDTH_DEFAULT_PACKET_SIZE 512*1024 /* Bytes */
 
 

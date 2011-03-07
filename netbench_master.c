@@ -8,6 +8,8 @@
 #include "netbench_communication.h"
 #include "netbench_algorithm.h"
 #include "netbench_algorithm_type.h"
+#include "netbench_printer_type.h"
+#include "netbench_printer.h"
 
 
 int netbench_master_run(int rank, int clientsnb, options_t opts)
@@ -18,7 +20,10 @@ int netbench_master_run(int rank, int clientsnb, options_t opts)
 
 	netbench_algo_run_master(NETBENCH_ALGO_MATRIX,results,clientsnb);
 
-	netbench_list_result_print(results);
+	netbench_printer_print(NETBENCH_PRINTER_HTML,NETBENCH_TEST_LATENCY,
+		results, clientsnb);
+	netbench_printer_print(NETBENCH_PRINTER_HTML,NETBENCH_TEST_BANDWIDTH,
+		results, clientsnb);
 
 	linked_list_free(results);
 

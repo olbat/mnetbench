@@ -5,6 +5,7 @@
 #include "netbench_result_bandwidth.h"
 #include "netbench_test_type.h"
 #include "netbench_result.h"
+#include "netbench_printer_type.h"
 #include "netbench_printer_tool.h"
 
 struct netbench_result *
@@ -54,13 +55,29 @@ netbench_result_bandwidth_recv(int rank)
 	return ret;
 }
 
-void netbench_result_bandwidth_print(struct netbench_result *res)
+void netbench_result_bandwidth_print(
+	enum netbench_printer_type prtype,
+	struct netbench_result *res
+)
 {
 	char printbuff[NETBENCH_PRINTER_BUFF_SIZE];
 
-	fprintf(stdout,"(Bandwidth): \n\t bw=%s",
-		netbench_printer_tool_bandwidth(
-			printbuff,sizeof(printbuff),res->u.bandwidth->bw
-		)
-	);
+	switch (prtype)
+	{
+	case NETBENCH_PRINTER_CLASSIC:
+		fprintf(stdout,"\tbw=%s",
+			netbench_printer_tool_bandwidth(
+				printbuff,sizeof(printbuff),res->u.bandwidth->bw
+			)
+		);
+		break;
+	case NETBENCH_PRINTER_HTML:
+	default:
+		fprintf(stdout,"%s",
+			netbench_printer_tool_bandwidth(
+				printbuff,sizeof(printbuff),res->u.bandwidth->bw
+			)
+		);
+		break;
+	}
 }

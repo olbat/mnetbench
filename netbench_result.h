@@ -5,6 +5,7 @@
 
 #include "netbench_result_bandwidth.h"
 #include "netbench_result_latency.h"
+#include "netbench_printer_type.h"
 
 #define NETBENCH_RESULT_INFO_LIST \
 { \
@@ -30,7 +31,8 @@ struct netbench_result_info
 	void (*free_func)(struct netbench_result *res);
 	int (*send_func)(struct netbench_result *res, int rank);
 	struct netbench_result *(*recv_func)(int rank);
-	void (*print_func)(struct netbench_result *res);
+	void (*print_func)(enum netbench_printer_type prtype,
+		struct netbench_result *res);
 };
 
 struct netbench_result
@@ -51,6 +53,6 @@ struct netbench_result *netbench_result_init(enum netbench_test_type type,
 void netbench_result_free(struct netbench_result *res);
 int netbench_result_send(struct netbench_result *res, int rank);
 struct netbench_result *netbench_result_recv(int rank);
-void netbench_result_print(struct netbench_result *res);
-
+void netbench_result_print(enum netbench_printer_type prtype,
+	struct netbench_result *res);
 #endif

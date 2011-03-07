@@ -16,7 +16,7 @@ int main (int argc, char **argv)
 	options_t options;
 
 	OPT_INIT(options);	
-	OPT_SET(options,OPT_FLAG_DEBUG);
+	//OPT_SET(options,OPT_FLAG_DEBUG);
 	
 	if (argc < 1)
 	{
