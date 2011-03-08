@@ -2,9 +2,9 @@
 #define _NETBENCH_TASK_H
 
 #include "netbench_test_type.h"
-#include "netbench_test.h"
 #include "netbench_result.h"
 #include "linked_list.h"
+#include "netbench_role.h"
 
 struct netbench_task
 {

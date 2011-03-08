@@ -12,22 +12,18 @@
 #include "netbench_algorithm_type.h"
 #include "netbench_communication.h"
 #include "netbench_list_result.h"
+#include "netbench_list_task.h"
 
 int netbench_client_run(int mrank, int clientsnb, options_t opts)
 {
 	struct linked_list *results;
 	struct linked_list *tasks;
-	struct netbench_task *tmptask;
 
 	results = linked_list_init();
 
 	tasks = linked_list_init();
 
-	tmptask = netbench_task_init(NETBENCH_TEST_BANDWIDTH,results,1,opts);
-	linked_list_add(tasks,linked_list_task_value_init(tmptask));
-
-	tmptask = netbench_task_init(NETBENCH_TEST_LATENCY,results,1,opts);
-	linked_list_add(tasks,linked_list_task_value_init(tmptask));
+	netbench_list_task_init(tasks,results,opts);
 
 	netbench_algo_run_client(NETBENCH_ALGO_MATRIX,tasks,results,mrank,
 		clientsnb);

@@ -20,10 +20,7 @@ int netbench_master_run(int rank, int clientsnb, options_t opts)
 
 	netbench_algo_run_master(NETBENCH_ALGO_MATRIX,results,clientsnb);
 
-	netbench_printer_print(NETBENCH_PRINTER_HTML,NETBENCH_TEST_LATENCY,
-		results, clientsnb);
-	netbench_printer_print(NETBENCH_PRINTER_HTML,NETBENCH_TEST_BANDWIDTH,
-		results, clientsnb);
+	netbench_printer_print(results, clientsnb,opts);
 
 	linked_list_free(results);
 

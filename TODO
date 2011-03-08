@@ -1,3 +1,4 @@
 - Errors management system
 - int rank abstraction
 - Macro to access union+ptr values
+- Repeat stuff working as expected

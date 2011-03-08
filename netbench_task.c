@@ -4,6 +4,8 @@
 #include "netbench_test_type.h"
 #include "netbench_test.h"
 #include "linked_list.h"
+#include "netbench_test.h"
+
 
 struct netbench_task *
 netbench_task_init(

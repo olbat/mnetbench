@@ -15,12 +15,13 @@
 __inline__ struct netbench_result_info *
 netbench_result_info_fetch(enum netbench_test_type type)
 {
+	static struct netbench_result_info resultinfolist[] = 
+		NETBENCH_RESULT_INFO_LIST;
 	struct netbench_result_info *ptr;
-	struct netbench_result_info resultinfolist[] = NETBENCH_RESULT_INFO_LIST;
 
 	ptr = resultinfolist;
 
-	while ((ptr) && (ptr->type != type))
+	while ((ptr->type != NETBENCH_TEST_NONE) && (ptr->type != type))
 		ptr++;
 	
 	return ptr;

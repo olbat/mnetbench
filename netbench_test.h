@@ -4,28 +4,33 @@
 #include "netbench_test_type.h"
 #include "netbench_result.h"
 #include "netbench_role.h"
+#include "options.h"
 
 #include "netbench_test_bandwidth.h"
 #include "netbench_test_latency.h"
 
 #define NETBENCH_TEST_INFO_LIST \
 { \
-	{ NETBENCH_TEST_BANDWIDTH, netbench_test_bandwidth_init, \
-		netbench_test_bandwidth_free, netbench_test_bandwidth_reset, \
+	{ NETBENCH_TEST_BANDWIDTH, OPT_FLAG_TEST_BANDWIDTH, \
+		netbench_test_bandwidth_init, \
+		netbench_test_bandwidth_free, \
+		netbench_test_bandwidth_reset, \
 		netbench_test_bandwidth_tester_run, \
 		netbench_test_bandwidth_tested_run }, \
-	{ NETBENCH_TEST_LATENCY, netbench_test_latency_init, \
-		netbench_test_latency_free, netbench_test_latency_reset, \
+	{ NETBENCH_TEST_LATENCY, OPT_FLAG_TEST_LATENCY, \
+		netbench_test_latency_init, \
+		netbench_test_latency_free, \
+		netbench_test_latency_reset, \
 		netbench_test_latency_tester_run, \
 		netbench_test_latency_tested_run }, \
-	{ 0 } \
+	{ NETBENCH_TEST_NONE, 0, 0, 0, 0, 0, 0 } \
 }
-
 
 
 struct netbench_test_info
 {
 	enum netbench_test_type type;
+	enum option_flag optflag;
 	struct netbench_test_data *(*init_func)(int opts);
 	void (*free_func)(struct netbench_test_data *test);
 	int (*reset_func)(struct netbench_test_data *test);
@@ -40,7 +45,6 @@ struct netbench_test
 	enum netbench_test_type type;
 	struct netbench_test_data *data;
 	int opts;
-	/* void (*print_func)(struct netbench_result *res); */
 };
 
 struct netbench_test_data

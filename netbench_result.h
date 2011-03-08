@@ -19,7 +19,7 @@
 		netbench_result_latency_send, \
 		netbench_result_latency_recv, \
 		netbench_result_latency_print }, \
-	{ 0 } \
+	{ NETBENCH_TEST_NONE, 0, 0, 0, 0, 0 } \
 }
 
 

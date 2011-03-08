@@ -5,23 +5,40 @@
 #include "linked_list.h"
 #include "netbench_result.h"
 #include "mnetbench.h"
+#include "options.h"
+#include "netbench_test.h"
 
 __inline__ void netbench_printer_print(
-	enum netbench_printer_type prtype,
-	enum netbench_test_type tetype,
 	struct linked_list *results,
-	unsigned int clientsnb
+	unsigned int clientsnb,
+	options_t opts
 )
 {
-	switch (prtype)
+	static struct netbench_test_info testinfolist[] =
+		NETBENCH_TEST_INFO_LIST;
+	static struct netbench_printer_info printerinfolist[] =
+		NETBENCH_PRINTER_INFO_LIST;
+	struct netbench_test_info *testptr;
+	struct netbench_printer_info *prptr;
+
+	testptr = testinfolist;
+
+	while (testptr->type != NETBENCH_TEST_NONE)
 	{
-	case NETBENCH_PRINTER_HTML:
-		netbench_printer_print_html(prtype,tetype,results,clientsnb);
-		break;
-	case NETBENCH_PRINTER_CLASSIC:
-	default:
-		netbench_printer_print_classic(prtype,tetype,results,clientsnb);
-		break;
+		if (OPT_GET(opts,testptr->optflag))
+		{
+			prptr = printerinfolist;
+			while (prptr->type != NETBENCH_PRINTER_NONE)
+			{
+				if (OPT_GET(opts,prptr->optflag))
+				{
+					prptr->func(prptr->type,testptr->type,
+						results,clientsnb);
+				}
+				prptr++;
+			}
+		}
+		testptr++;
 	}
 }
 

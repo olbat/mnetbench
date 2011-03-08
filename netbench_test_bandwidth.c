@@ -51,6 +51,7 @@ int netbench_test_bandwidth_tester_run(
 	unsigned int buffsize = NETBENCH_TEST_BANDWIDTH_DEFAULT_PACKET_SIZE,
 		size, elapsedsec;
 	unsigned long long count;
+	float difftime;
 	char buff[buffsize];
 	char printbuff[NETBENCH_PRINTER_BUFF_SIZE];
 	struct timeval start, stop, cur, diff;
@@ -84,9 +85,10 @@ int netbench_test_bandwidth_tester_run(
 	timeval_subtract(&diff, &stop, &start);
 	size = 0;
 	MPI_Send(&size, 1, MPI_INT, trank, 1, MPI_COMM_WORLD);
+	difftime = diff.tv_sec + (diff.tv_usec * 10e-6);
 	resptr->bw = ((double) 
 			(count * NETBENCH_TEST_BANDWIDTH_DEFAULT_PACKET_SIZE)
-		) / diff.tv_sec;
+		) / difftime;
 
 	DEBUG(opts,"(%d) Bandwidth of %d is %s\n",mrank,trank,
 		netbench_printer_tool_bandwidth(

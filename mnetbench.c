@@ -15,14 +15,8 @@ int main (int argc, char **argv)
 	char pname[MPI_MAX_PROCESSOR_NAME];
 	options_t options;
 
-	OPT_INIT(options);	
-	//OPT_SET(options,OPT_FLAG_DEBUG);
+	options = parse_options(argc,argv);
 	
-	if (argc < 1)
-	{
-		fprintf(stderr,"usage: %s <...>\n",*argv);
-		goto out;
-	}
 
 	if ((rc = MPI_Init(&argc,&argv)) != MPI_SUCCESS)
 	{
@@ -34,16 +28,13 @@ int main (int argc, char **argv)
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Get_processor_name(pname, &pnamelen);
 
-	fprintf(stdout,"Process %d is %s\n", rank, pname);
+	if (!OPT_GET(options,OPT_FLAG_QUIET))
+		fprintf(stdout,"Process %d is %s\n", rank, pname);
 
 	if (rank == NETBENCH_MASTER_RANK)
-	{
 		ret = netbench_master_run(rank,tasknb,options);
-	}
 	else
-	{
 		ret = netbench_client_run(rank,tasknb,options);
-	}
 
 	MPI_Finalize();
 
