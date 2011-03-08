@@ -17,8 +17,10 @@ options_t parse_options(int argc, char **argv)
 		{
 			{"test-latency",	optional_argument, 0,	'l'},
 			{"test-bandwidth",	optional_argument, 0,	'b'},
+
 			{"print-classic",	no_argument,	0,	'c'},
 			{"print-html",	no_argument,	0,	'x'},
+
 			{"debug",	no_argument,	0,	'd'},
 			{"quiet",	no_argument,	0,	'q'},
 			{"help",	no_argument,	0,	'h'},
@@ -26,7 +28,7 @@ options_t parse_options(int argc, char **argv)
 		};
 		int option_index = 0;
 
-		c = getopt_long (argc, argv, "h", long_options, &option_index);
+		c = getopt_long (argc, argv, "l::b::cxdqh", long_options, &option_index);
 
 		/* Detect the end of the options. */
 		if (c == -1)
