@@ -7,6 +7,7 @@
 #include "netbench_client.h"
 #include "options.h"
 
+struct option_test_arguments opt_test_args;
 char errmsg[NETBENCH_ERR_STR_SIZE];
 
 int main (int argc, char **argv)

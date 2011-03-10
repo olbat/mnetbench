@@ -2,3 +2,4 @@
 - int rank abstraction
 - Macro to access union+ptr values
 - Repeat stuff working as expected
+- Manage test modules options a better way

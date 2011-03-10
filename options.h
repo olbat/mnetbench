@@ -15,10 +15,10 @@ enum option_flag
 	OPT_FLAG_QUIET = 0x1
 };
 
-struct option_name
+struct option_test_arguments
 {
-	enum option_flag flag;
-	char sname;
+	char *bandwidth;
+	char *latency;
 };
 
 #define OPT_INIT(OPT) (OPT) = \
@@ -30,7 +30,10 @@ struct option_name
 
 #define OPT_GET(OPT,FLAG) ((OPT)&(FLAG))
 
+#define OPT_TEST_BUFF_SIZE 64
+
 
 options_t parse_options(int argc, char **argv);
+char *opt_test_parse_option(char *namebuff, char *valbuff, char *str);
 
 #endif

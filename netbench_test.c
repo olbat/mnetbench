@@ -10,7 +10,7 @@
 #include "netbench_test_latency.h"
 
 
-__inline__ struct netbench_test_info *
+struct netbench_test_info *
 netbench_test_info_fetch(enum netbench_test_type type)
 {
 	static struct netbench_test_info testinfolist[] = 

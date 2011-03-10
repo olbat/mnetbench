@@ -1,8 +1,9 @@
 #include <getopt.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "options.h"
-
+#include "mnetbench.h"
 
 options_t parse_options(int argc, char **argv)
 {
@@ -48,13 +49,11 @@ options_t parse_options(int argc, char **argv)
 				break;
 			case 'l':
 				OPT_SET(ret,OPT_FLAG_TEST_LATENCY);
-				if (optarg)
-					fprintf(stdout,"OPT OMG:%s\n",optarg);
+				opt_test_args.latency = optarg;
 				break;
 			case 'b':
 				OPT_SET(ret,OPT_FLAG_TEST_BANDWIDTH);
-				if (optarg)
-					fprintf(stdout,"OPT OMG:%s\n",optarg);
+				opt_test_args.bandwidth = optarg;
 				break;
 			case 'c':
 				OPT_SET(ret,OPT_FLAG_PRINTER_CLASSIC);
@@ -88,4 +87,41 @@ options_t parse_options(int argc, char **argv)
 	}
 
 	return ret;
+}
+
+char *opt_test_parse_option(char *namebuff, char *valbuff, char *str)
+{
+	char *basestr, *sepstr;
+	basestr = str;
+	sepstr = 0;
+	while (*str)
+	{
+		if (*str == ' ')
+			continue;
+		if (*str == ':')
+			sepstr = str;
+		if (*str == ',')
+			break;
+		str++;
+	}
+
+	if (!sepstr)
+		sepstr = str;
+		
+	memcpy(namebuff,basestr,sepstr-basestr);
+	namebuff[sepstr-basestr] = 0;
+
+	if (sepstr != str)
+	{
+		memcpy(valbuff,sepstr+1,str-sepstr-1);
+		valbuff[str-sepstr-1] = 0;
+	}
+	else
+		*valbuff = 0;
+		
+
+	if (*str)
+		str++;
+	
+	return str;
 }
