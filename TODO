@@ -3,3 +3,4 @@
 - Macro to access union+ptr values
 - Repeat stuff working as expected
 - Manage test modules options a better way
+- Use netbench_process struct in function's param

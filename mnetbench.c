@@ -9,6 +9,7 @@
 
 struct option_test_arguments opt_test_args;
 char errmsg[NETBENCH_ERR_STR_SIZE];
+struct netbench_process *procme = 0;
 
 int main (int argc, char **argv)
 {
@@ -29,8 +30,7 @@ int main (int argc, char **argv)
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 	MPI_Get_processor_name(pname, &pnamelen);
 
-	if (!OPT_GET(options,OPT_FLAG_QUIET))
-		fprintf(stdout,"Process %d is %s\n", rank, pname);
+	procme = netbench_process_init(rank,pname);
 
 	if (rank == NETBENCH_MASTER_RANK)
 		ret = netbench_master_run(rank,tasknb,options);
@@ -47,8 +47,12 @@ int main (int argc, char **argv)
 	mpierr:
 		MPI_Abort(MPI_COMM_WORLD, rc);
 	err:
+		if (procme)
+			netbench_process_free(procme);
 		perror(errmsg);
 		return 1;
 	out:
+		if (procme)
+			netbench_process_free(procme);
 		return ret;
 }

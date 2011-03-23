@@ -21,20 +21,20 @@ struct netbench_printer_info
 	enum netbench_printer_type type;
 	enum option_flag optflag;
 	void (*func)(enum netbench_printer_type prtype,
-		enum netbench_test_type tetype,struct linked_list *results,
-		unsigned int clientsnb);
+		enum netbench_test_type tetype,struct linked_list *processes,
+		struct linked_list *results,unsigned int clientsnb);
 };
 
-void netbench_printer_print(struct linked_list *results,unsigned int clientsnb,
-	options_t opt);
+void netbench_printer_print(struct linked_list *processes,
+	struct linked_list *results,unsigned int clientsnb,options_t opt);
 void netbench_printer_print_single(enum netbench_printer_type prtype,
 	enum netbench_test_type tetype,struct linked_list *results,
 	int srank,int drank);
 void netbench_printer_print_classic(enum netbench_printer_type prtype,
-	enum netbench_test_type tetype,struct linked_list *results,
-	unsigned int clientsnb);
+	enum netbench_test_type tetype,struct linked_list *processes,
+	struct linked_list *results,unsigned int clientsnb);
 void netbench_printer_print_html(enum netbench_printer_type prtype,
-	enum netbench_test_type tetype,struct linked_list *results,
-	unsigned int clientsnb);
+	enum netbench_test_type tetype,struct linked_list *processes,
+	struct linked_list *results,unsigned int clientsnb);
 
 #endif

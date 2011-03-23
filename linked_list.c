@@ -23,6 +23,7 @@
 
 #include "netbench_result.h"
 #include "netbench_task.h"
+#include "netbench_process.h"
 
 
 struct linked_list *linked_list_init()
@@ -122,6 +123,26 @@ void linked_list_task_value_free(struct linked_list_value *val)
 	free(val);
 }
 
+struct linked_list_value *
+linked_list_proc_value_init(struct netbench_process *proc)
+{
+	struct linked_list_value *ret;
+
+	ret = (struct linked_list_value *)
+		malloc(sizeof(struct linked_list_value));
+	ret->type = LKD_TYPE_PROC;
+
+	ret->u.proc = proc;
+
+	return ret;
+}
+
+void linked_list_proc_value_free(struct linked_list_value *val)
+{
+	netbench_process_free(val->u.proc);
+	free(val);
+}
+
 void linked_list_value_free(struct linked_list_value *val)
 {
 	if (val)
@@ -131,8 +152,11 @@ void linked_list_value_free(struct linked_list_value *val)
 			case LKD_TYPE_RESULT : 
 				linked_list_res_value_free(val);
 				break;
-			case LKD_TYPE_TASK : 
+			case LKD_TYPE_TASK :
 				linked_list_task_value_free(val);
+				break;
+			case LKD_TYPE_PROC :
+				linked_list_proc_value_free(val);
 				break;
 		}
 	}

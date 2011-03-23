@@ -13,6 +13,7 @@
 #include "netbench_communication.h"
 #include "netbench_list_result.h"
 #include "netbench_list_task.h"
+#include "netbench_process.h"
 
 int netbench_client_run(int mrank, int clientsnb, options_t opts)
 {
@@ -24,6 +25,8 @@ int netbench_client_run(int mrank, int clientsnb, options_t opts)
 	tasks = linked_list_init();
 
 	netbench_list_task_init(tasks,results,opts);
+
+	netbench_comm_proc_send(procme,NETBENCH_MASTER_RANK);
 
 	netbench_algo_run_client(NETBENCH_ALGO_MATRIX,tasks,results,mrank,
 		clientsnb);

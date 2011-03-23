@@ -1,5 +1,6 @@
 #include <mpi.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "netbench_communication.h"
 #include "netbench_communication_protocol.h"
@@ -115,6 +116,39 @@ int netbench_comm_rank_recv(int rank)
 	netbench_comm_proto_recv(NETBENCH_COMM_PROTO_RANK,rank);
 
 	MPI_Recv(&ret, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+
+	return ret;
+}
+
+int netbench_comm_proc_send(struct netbench_process *proc, int rank)
+{
+	int num, size;
+	char *name;
+
+	netbench_comm_proto_send(NETBENCH_COMM_PROTO_PROC,rank);
+	num = proc->num;
+	MPI_Send(&num, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+	size = strlen(proc->name) + 1;
+	MPI_Send(&size, 1, MPI_INT, rank, 1, MPI_COMM_WORLD);
+	name = proc->name;
+	MPI_Send(name, size, MPI_CHAR, rank, 1, MPI_COMM_WORLD);
+
+	return 0;
+}
+
+struct netbench_process *netbench_comm_proc_recv(int rank)
+{
+	struct netbench_process *ret;
+	static char name[MPI_MAX_PROCESSOR_NAME];
+	int num,size;
+	MPI_Status stat;
+
+	netbench_comm_proto_recv(NETBENCH_COMM_PROTO_PROC,rank);
+	MPI_Recv(&num, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+	MPI_Recv(&size, 1, MPI_INT, rank, 1, MPI_COMM_WORLD, &stat);
+	MPI_Recv(name, size, MPI_CHAR, rank, 1, MPI_COMM_WORLD, &stat);
+
+	ret = netbench_process_init(num,name);
 
 	return ret;
 }

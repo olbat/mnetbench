@@ -23,7 +23,8 @@
 enum linked_list_type
 {
 	LKD_TYPE_RESULT,
-	LKD_TYPE_TASK
+	LKD_TYPE_TASK,
+	LKD_TYPE_PROC
 };
 
 struct linked_list_value
@@ -33,6 +34,7 @@ struct linked_list_value
 	{
 		struct netbench_result *res;
 		struct netbench_task *task;
+		struct netbench_process *proc;
 	} u;
 };
 
@@ -57,5 +59,9 @@ void linked_list_res_value_free(struct linked_list_value *val);
 #include "netbench_task.h"
 struct linked_list_value *linked_list_task_value_init(struct netbench_task *task);
 void linked_list_task_value_free(struct linked_list_value *val);
+
+#include "netbench_process.h"
+struct linked_list_value *linked_list_proc_value_init(struct netbench_process *proc);
+void linked_list_proc_value_free(struct linked_list_value *val);
 
 #endif
